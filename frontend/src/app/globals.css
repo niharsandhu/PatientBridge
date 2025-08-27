@@ -1,0 +1,136 @@
+@import "tailwindcss";
+body {
+  font-family: Montserrat, sans-serif;
+}
+.tagline{
+  font-family: anton, sans-serif;
+}
+
+.sign{
+  font-family: Montserrat,sans-serif;
+}
+
+.radar-wave {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: rgba(59, 130, 246, 0.5); /* Light blue */
+  border-radius: 50%;
+  animation: pulse 2s infinite ease-out;
+  transform: translate(-50%, -50%);
+}
+.radar-wave2{
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: rgba(250, 75, 75, 0.5); /* Light blue */
+  border-radius: 50%;
+  animation: pulse 2s infinite ease-out;
+  transform: translate(-50%, -50%); 
+}
+
+@keyframes pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(3);
+    opacity: 0;
+  }
+}
+
+.juice {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+}
+.hospital-page .juice {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+}
+
+
+.juice img {
+  animation: float 4s ease-in-out infinite;
+  max-height: 700px;
+}
+
+.hospital-page .juice img {
+  animation: float 4s ease-in-out infinite;
+  max-height: 600px;
+}
+
+@keyframes float {
+  0% {
+    transform: translate(-50%, -46%);
+  }
+  50% {
+    transform: translate(-50%, -54%);
+  }
+  100% {
+    transform: translate(-50%, -46%);
+  }
+}
+
+#scene {
+  position: relative !important; /* Ensure this parent has relative positioning */
+  width: 100% !important; /* Ensure it covers the area */
+  height: 100% !important; /* Ensure it covers the area */
+}
+
+.leaves .layer {
+  position: absolute !important; /* Layers need absolute positioning within the parent container */
+}
+
+.leaves .layer:nth-child(1) {
+  top: 250px !important;
+  left: 250px !important;
+}
+
+.leaves .layer:nth-child(2) {
+  top: 340px !important;
+  left: 900px !important;
+}
+
+.leaves .layer:nth-child(3) {
+  top: 440px !important;
+  left: 470px !important;
+}
+
+.leaves .layer:nth-child(4) {
+  top: 40px !important;
+  left: 800px !important;
+}
+
+.leaves .layer:nth-child(5) {
+  top: 300px !important;
+  left: 1040px !important;
+}
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+}
+
+.anton {
+  font-family: 'Anton', sans-serif;
+}
+
+@keyframes glow {
+  0% { opacity: 0.3; transform: translateX(-100%); }
+  50% { opacity: 0.8; }
+  100% { opacity: 0.3; transform: translateX(100%); }
+}
+
+.animate-glow {
+  animation: glow 4s ease-in-out infinite;
+}
+
+.animation-delay-1000 { animation-delay: 1s; }
+.animation-delay-2000 { animation-delay: 2s; }
+.animation-delay-3000 { animation-delay: 3s; }
