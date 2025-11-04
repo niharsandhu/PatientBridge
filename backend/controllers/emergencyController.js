@@ -3,6 +3,7 @@ const User = require('../models/userModel');
 const Ambulance = require('../models/ambulanceModel');
 const Hospital = require('../models/hospitalModel');
 const axios = require('axios');
+const { getIO } = require("../socket"); 
 
 // Utility function to calculate distance (Haversine formula)
 const calculateDistance = (lat1, lon1, lat2, lon2) => {
@@ -197,8 +198,7 @@ const getNearbyEmergencies = async (req, res) => {
 };
 
 
-
-// Update ambulance location
+// Update ambulance location + emit real-time updates
 const updateLocation = async (req, res) => {
   try {
     const { ambulanceId, lng, lat } = req.body;
@@ -207,23 +207,40 @@ const updateLocation = async (req, res) => {
       return res.status(400).json({ error: 'ambulanceId, lng and lat are required' });
     }
 
-    // Update the location
+    // 🧭 Log incoming data
+    console.log(`📩 Location update received for Ambulance ${ambulanceId}:`, { lat, lng });
+
+    // ✅ Update location in DB
     const ambulance = await Ambulance.findByIdAndUpdate(
       ambulanceId,
       { location: { type: 'Point', coordinates: [lng, lat] } },
-      { new: true } // return the updated document
+      { new: true }
     );
 
     if (!ambulance) {
+      console.log(`❌ Ambulance not found: ${ambulanceId}`);
       return res.status(404).json({ error: 'Ambulance not found' });
     }
 
-    return res.status(200).json({ message: 'Location updated', ambulance });
+    // 🚀 Emit live location to all connected clients
+    const io = getIO(); // Ensure you’re calling the function to get the instance
+    io.emit("ambulanceLocationUpdate", {
+      ambulanceId: ambulance._id,
+      coords: { lat, lng },
+      timestamp: new Date()
+    });
+
+    // 🧾 Log successful emission
+    console.log(`✅ Location emitted for Ambulance ${ambulanceId}:`, { lat, lng });
+
+    res.status(200).json({ message: 'Location updated', ambulance });
   } catch (err) {
-    console.error(err);
-    return res.status(500).json({ error: 'Server error' });
+    console.error("🔥 Server Error:", err);
+    res.status(500).json({ error: 'Server error' });
   }
 };
+
+
 const getCurrentEmergencyByDriver = async (req, res) => {
   try {
     const { driverId } = req.params;

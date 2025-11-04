@@ -54,7 +54,6 @@ const Navbar = () => {
         <ul className="menu-links flex space-x-5 text-xs font-semibold">
           {[
             { name: "Home", href: "/" },
-            { name: "Blood Donation", href: "/" },
             { name: "Find a Hospital", href: "/hospital" },
             { name: "Emergency", href: "/Emergency" },
           ].map((item) => (

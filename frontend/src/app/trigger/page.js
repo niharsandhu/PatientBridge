@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect, useCallback } from 'react';
-import { Phone, MapPin, Clock, Heart, User, Building2, AlertTriangle, Navigation, Shield, Activity, Zap, X, Loader } from 'lucide-react';
+import { Phone, MapPin, Clock, User, Building2, AlertTriangle, Shield, Activity, X, Loader } from 'lucide-react';
 import MapComponent from '../components/map';
 import axios from 'axios';
 

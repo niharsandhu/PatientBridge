@@ -2,9 +2,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Phone, MapPin, Clock, Heart, User, Building2, AlertTriangle, Navigation, Shield, Activity, CheckCircle, X, Car, Timer } from 'lucide-react';
 import axios from 'axios';
+import { io } from "socket.io-client";
 import MapComponent from '../components/map';
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+const socket = io("http://localhost:3001"); 
+const API_BASE_URL = 'http://localhost:3001/api';
 
 const AmbulanceDashboard = () => {
   // State
@@ -46,18 +47,21 @@ const AmbulanceDashboard = () => {
   }, []);
 
   // Update driver location to server
-  const updateLocationToServer = useCallback(async (latitude, longitude) => {
-    if (!driverInfo.id) return;
-    try {
-      await axios.post(`${API_BASE_URL}/emergency/update`, {
-        ambulanceId: driverInfo.id,
-        lat: latitude,
-        lng: longitude,
-      });
-    } catch (err) {
-      console.error('Failed to update location:', err);
-    }
-  }, [driverInfo.id]);
+const updateLocationToServer = useCallback(async (latitude, longitude) => {
+  if (!driverInfo.id) return;
+  console.log("📤 Sending location update:", { latitude, longitude }); // ✅ Debug log
+  try {
+    const res = await axios.post(`${API_BASE_URL}/emergency/update`, {
+      ambulanceId: driverInfo.id,
+      lat: latitude,
+      lng: longitude,
+    });
+    console.log("✅ Server response:", res.data);
+  } catch (err) {
+    console.error("❌ Failed to update location:", err.response?.data || err.message);
+  }
+}, [driverInfo.id]);
+
 
   // Get current geolocation
   useEffect(() => {
